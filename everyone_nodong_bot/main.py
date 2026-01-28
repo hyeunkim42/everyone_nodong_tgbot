@@ -53,6 +53,14 @@ RULES_MESSAGE_FORMAT = """
 평등수칙에 대한 자세한 내용은 <a href="https://nodong.org/data_paper/7814605">민주노총 평등수칙 해설서</a>를 참조해주세요.
 """.strip()
 
+QUESTION_MESSAGE_FORMAT = """
+지회 운영에 대한 문의 사항이나 불편사항이 있으시다면 제작해둔 <a href="https://forms.gle/ivL5oGqwYV8TVyR76">구글폼</a>, 지회 텔레그램 방(전체, 권역별), 운영위원에게 직접 문의를 부탁드립니다.
+"""
+
+CALENDAR_MESSAGE_FORMAT = """
+<a href="https://calendar.google.com/calendar/u/0/embed?src=b3c57107d44dd371af3df900c5fa541b603080a33702e1b20a9b85e1b38aef33@group.calendar.google.com&ctz=Asia/Seoul">달력 바로 보기</a>
+"""
+
 # Enable logging
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -114,6 +122,28 @@ async def rules(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         )
     )
 
+async def question(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    await update.message.reply_text(
+        text=QUESTION_MESSAGE_FORMAT,
+        parse_mode=ParseMode.HTML,
+        disable_notification=True,
+        link_preview_options=LinkPreviewOptions(
+            is_disabled=False,
+            prefer_large_media=False
+        )
+    )
+
+async def calendar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    await update.message.reply_text(
+        text=CALENDAR_MESSAGE_FORMAT,
+        parse_mode=ParseMode.HTML,
+        disable_notification=True,
+        link_preview_options=LinkPreviewOptions(
+            is_disabled=False,
+            prefer_large_media=False
+        )
+    )
+
 
 
 def main() -> None:
@@ -128,6 +158,8 @@ def main() -> None:
 
     application.add_handler(CommandHandler("about", greet_message_force), group=2)
     application.add_handler(CommandHandler("rules", rules), group=2)
+    application.add_handler(CommandHandler("question", question), group=2)
+    application.add_handler(CommandHandler("calendar", calendar), group=2)
 
     # Run the bot until the user presses Ctrl-C
     # We pass 'allowed_updates' handle *all* updates including `chat_member` updates
